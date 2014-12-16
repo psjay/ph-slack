@@ -3,6 +3,7 @@
 *.swp
 .installed.cfg
 bin
+config.py
 tags
 develop-eggs
 dist
