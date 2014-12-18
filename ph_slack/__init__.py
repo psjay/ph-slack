@@ -127,7 +127,9 @@ def refresh_slack_email_map():
 
 
 def get_disabled_slack_users():
-    with open(app.config['SLACK_DISABLED_USERS_FILE'], 'rw') as disabled_users_file:
+    if not os.path.exists(app.config['SLACK_DISABLED_USERS_FILE']):
+        return []
+    with open(app.config['SLACK_DISABLED_USERS_FILE'], 'r') as disabled_users_file:
         return [line.strip() for line in disabled_users_file.readlines() if line.strip()]
 
 
@@ -151,10 +153,11 @@ def handle():
 
     noti_user_phids = get_noti_ph_users_by_obj(object_phid)
     noti_user_mails = get_ph_user_emails(noti_user_phids)
+    disabled_users = get_disabled_slack_users()
     slack_usernames = []
     for mail in noti_user_mails:
         slack_name = SLACK_USER_EMAIL_MAP['map'].get(mail)
-        if slack_name is not None:
+        if slack_name is not None and slack_name not in disabled_users:
             slack_usernames.append(slack_name)
             # post message
             params = dict(
@@ -187,14 +190,14 @@ def switch():
     disabled_users = get_disabled_slack_users()
     if action == 'enable':
         if username in disabled_users:
-            with open(app.config['SLACK_DISABLED_USERS_FILE'], 'w') as f:
+            with open(app.config['SLACK_DISABLED_USERS_FILE'], 'w+') as f:
                 for name in disabled_users:
                     if name != username:
-                        f.write(name)
+                        f.write(name + '\n')
     elif action == 'disable':
         if username not in disabled_users:
-            with open(app.config['SLACK_DISABLED_USERS_FILE'], 'a') as f:
-                f.write(username)
+            with open(app.config['SLACK_DISABLED_USERS_FILE'], 'a+') as f:
+                f.write(username + '\n')
     else:
         abort(401)
 
