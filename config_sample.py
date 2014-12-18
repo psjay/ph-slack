@@ -8,6 +8,8 @@ PHABRICATOR_CERT = 'ph-cert'
 
 SLACK_AUTH_TOKEN = 'slake auth token'
 
+SLACK_COMMAND_TOKEN = 'command token'
+
 EMAIL_DOMAIN = 'sample.com'
 
 
@@ -18,3 +20,6 @@ EMAIL_DOMAIN = 'sample.com'
 
 # Pick a name to displayed in Slack of you notification bot
 # SLACK_BOT_NAME = 'Phabricator'
+
+# Which file to record the disabled users?
+# DISABLED_USERS_FILE = './disabled_users.txt'

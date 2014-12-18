@@ -8,7 +8,7 @@ import re
 import sys
 import time
 
-from flask import Flask, request
+from flask import Flask, request, abort
 from phabricator import Phabricator
 from slacker import Slacker
 
@@ -126,6 +126,11 @@ def refresh_slack_email_map():
     )
 
 
+def get_disabled_slack_users():
+    with open(app.config['SLACK_DISABLED_USERS_FILE'], 'rw') as disabled_users_file:
+        return [line.strip() for line in disabled_users_file.readlines() if line.strip()]
+
+
 @app.route('/handle', methods=['POST'])
 def handle():
     story_id = request.form.get('storyID')
@@ -165,6 +170,35 @@ def handle():
     if slack_usernames:
         app.logger.info('Message: \n\t %s \n has been send to %r', story_text, slack_usernames)
     return "Message: \n\t %s \n has been send to %r." % (story_text, slack_usernames)
+
+
+@app.route('/switch', methods=['POST'])
+def switch():
+    username = request.form.get('user_name')
+    token = request.form.get('token')
+    action = request.form.get('text')
+    if not action or action not in ['disable', 'enable']:
+        action = 'enable'
+    action = action.strip()
+
+    if token != app.config['SLACK_COMMAND_TOKEN']:
+        abort(403)
+
+    disabled_users = get_disabled_slack_users()
+    if action == 'enable':
+        if username in disabled_users:
+            with open(app.config['SLACK_DISABLED_USERS_FILE'], 'w') as f:
+                for name in disabled_users:
+                    if name != username:
+                        f.write(name)
+    elif action == 'disable':
+        if username not in disabled_users:
+            with open(app.config['SLACK_DISABLED_USERS_FILE'], 'a') as f:
+                f.write(username)
+    else:
+        abort(401)
+
+    return 'OK.'
 
 
 def main():
