@@ -64,7 +64,8 @@ def handle():
         '%s@%s' % (s.username, app.config['EMAIL_DOMAIN'])
         for s in subscribers
     ]
-    slack.post_msg_to_users(story_text, emails=emails)
+    msg = u'%s 点击查看：%s' % (story_text, ph_obj.url)
+    slack.post_msg_to_users(msg, emails=emails)
     return 'success'
 
 
