@@ -9,7 +9,6 @@ import sys
 import time
 
 from flask import Flask, request, abort
-from phabricator import Phabricator
 from slacker import Slacker
 
 
@@ -201,7 +200,7 @@ def switch():
     else:
         abort(401)
 
-    return 'OK.'
+    return '%s success.' % action
 
 
 def main():
