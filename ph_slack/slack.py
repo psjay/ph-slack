@@ -45,7 +45,7 @@ class Slack(object):
             sent_names.append(name)
 
         if names:
-            logger.info('Message:\n\r %s\n has been send to %r', msg, sent_names)
+            logger.info('Message:\n\t %s\nhas been send to %r', msg, sent_names)
 
     def refresh_email_name_map(self):
         users = self.client.users.list().body['members']

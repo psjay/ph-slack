@@ -36,7 +36,7 @@ phabricator = Phabricator(
 
 @app.route('/handle', methods=['POST'])
 def handle():
-    author_phid = request.form.get('authorPHID')
+    author_phid = request.form.get('storyAuthorPHID')
     story_id = request.form.get('storyID')
     object_phid = request.form.get('storyData[objectPHID]')
     story_text = request.form.get('storyText')
