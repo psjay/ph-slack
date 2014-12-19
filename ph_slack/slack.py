@@ -29,7 +29,11 @@ class Slack(object):
             if name:
                 names.append(name)
 
+        sent_names = []
+        disabled_users = self.disabled_users
         for name in names:
+            if name in disabled_users:
+                continue
             params = dict(
                 channel='@%s' % name,
                 text=msg,
@@ -38,9 +42,10 @@ class Slack(object):
             if self.avatar:
                 params['icon_url'] = self.avatar
             self.client.chat.post_message(**params)
+            sent_names.append(name)
 
         if names:
-            logger.info('Message:\n\r %s\n has been send to %r', msg, names)
+            logger.info('Message:\n\r %s\n has been send to %r', msg, sent_names)
 
     def refresh_email_name_map(self):
         users = self.client.users.list().body['members']
