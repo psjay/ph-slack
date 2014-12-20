@@ -5,9 +5,9 @@ Instantly receive Phabricator notification in Slack.
 
 ## Features
 
-* Instant:
-* Customizable:
-* Togglable:
+* Instant.
+* Customizable.
+* Togglable.
  
 ## Usage
 
