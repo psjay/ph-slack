@@ -75,7 +75,7 @@ $ bin/gunicorn -w 4 -b 0.0.0.0:5000 'ph_slack:app' --log-file - --access-logfile
 
 Then, add `http://ph-slack.domain:5000/handle` to your Phabricator feed http hooks on `http://your-ph.domain/config/edit/feed.http-hooks/ ` page.
 
-Configure `http://ph-slack.domain:5000/handle` as the URL of  the Slack slash command you just created for ph-slack.
+Configure `http://ph-slack.domain:5000/switch` as the URL of  the Slack slash command you just created for ph-slack.
 
 Done!
 
