@@ -51,7 +51,7 @@ class Slack(object):
         users = self.client.users.list().body['members']
         self.email_name_map = dict(
             [
-                (user['profile']['email'], user['name'])
+                (user['profile'].get('email'), user['name'])
                 for user in users
             ]
         )
