@@ -24,7 +24,7 @@ In order to deploy ph-slack, you need to prepare these things:
 * A Slack [API Authentication Token](https://api.slack.com/tokens).
 * A Phabricator user (bot user is much better).
 * The administation privileges of your Phabricator and Slack.
-* An new [Slack slash command](https://slack.com/services/new/slash-commands).
+* A new [Slack slash command](https://slack.com/services/new/slash-commands).
 * A server that can be accessed from Slack server. 
 
 The last two things are optional if you don't want to your user to disable ph-slack.
